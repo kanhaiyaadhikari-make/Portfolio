@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kanhaiya Adhikari | Portfolio</title>
+<title>Kanhaiya Adhikari | Neon Portfolio</title>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -31,11 +31,9 @@ body{
     background:rgba(0,0,0,.75);
     backdrop-filter:blur(6px);
     display:flex;
-    justify-content:space-between;
-    align-items:center;
+    justify-content:center; /* center horizontally */
     z-index:10;
 }
-.navbar .logo{color:#fff;font-weight:bold;font-size:1.2rem;}
 .nav-links {
     display: flex;
     gap: 2rem;
@@ -81,11 +79,16 @@ section{
     display:flex;
     flex-direction:column;
     justify-content:center;
+    align-items:center; /* center all section content horizontally */
 }
 h2{text-align:center;margin-bottom:2.5rem;color:#00f7ff}
 
 /* HERO */
-.hero{text-align:center}
+.hero{text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center;}
+.hero img.hero-logo{
+    height:120px; /* 300% bigger */
+    margin-bottom:1.5rem;
+}
 .hero h1{font-size:3.2rem}
 .hero p{margin-top:1rem;font-size:1.2rem;color:#ccc}
 .hero .btn{
@@ -263,16 +266,6 @@ h2{text-align:center;margin-bottom:2.5rem;color:#00f7ff}
 <canvas id="bgCanvas"></canvas>
 
 <header class="navbar">
- <a href="#home" class="logo" style="display:flex;align-items:center;">
-  <img src="projects/logome.png" alt="K.A Logo" style="height:80px; object-fit:contain;">
-</a>
-
-
-  <button class="hamburger" aria-label="Toggle Menu">
-    <span></span>
-    <span></span>
-    <span></span>
-  </button>
   <nav class="nav-links">
     <a href="#home">Home</a>
     <a href="#about">About</a>
@@ -283,6 +276,8 @@ h2{text-align:center;margin-bottom:2.5rem;color:#00f7ff}
 </header>
 
 <section id="home" class="hero">
+<!-- Hero logo -->
+<img src="projects/logome.png" alt="K.A Logo" class="hero-logo">
 <h1>Kanhaiya Adhikari</h1>
 <p>Full Stack Developer</p>
 <a href="#projects"><button class="btn">Projects</button></a>
@@ -414,13 +409,8 @@ hamburger.addEventListener("click", () => {
 
 links.forEach(link => {
   link.addEventListener("click", () => {
-    const targetId = link.getAttribute("href").substring(1);
-    const currentSection = document.elementFromPoint(window.innerWidth / 2, window.innerHeight / 2).closest("section");
-    
-    if (!currentSection || currentSection.id !== targetId) {
-      navLinks.classList.remove("active");
-      hamburger.classList.remove("open");
-    }
+    navLinks.classList.remove("active");
+    hamburger.classList.remove("open");
   });
 });
 
