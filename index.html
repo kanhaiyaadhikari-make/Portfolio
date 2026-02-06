@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kanhaiya Adhikari | Portfolio</title>
+<title>Kanhaiya Adhikari | Neon Portfolio</title>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -202,6 +202,27 @@ h2{text-align:center;margin-bottom:2.5rem;color:#00f7ff}
     cursor:pointer;
 }
 
+/* BACKEND TABLE */
+.backend-table{
+    margin:auto;
+    margin-top:1rem;
+    border-collapse:collapse;
+    width:90%;
+    max-width:600px;
+    background:rgba(0,0,0,.8);
+    border:2px solid rgba(0,247,255,.5);
+    border-radius:12px;
+    box-shadow:0 0 30px #00f7ff,0 0 60px rgba(0,247,255,.6),inset 0 0 30px rgba(0,247,255,.3);
+    color:#fff;
+    text-align:center;
+}
+.backend-table th,
+.backend-table td{
+    border:1px solid rgba(0,247,255,.5);
+    padding:0.7rem;
+    border-radius:6px;
+}
+
 /* MOBILE */
 @media(max-width:500px){
     .contact-form:hover{transform:scale(1.05)}
@@ -303,11 +324,6 @@ BCA student focused on animated UI & full-stack development.
 <img src="projects/clicker/clck.png">
 <h3>Clicker</h3></a>
 
-
-
-
-
-
 <a class="project-card" href="projects/inventory/index.html" target="_blank">
 <img src="projects/inventory/inventory.png">
 <h3>Inventory Management</h3></a>
@@ -330,12 +346,21 @@ BCA student focused on animated UI & full-stack development.
 
 <section id="contact">
 <h2>Contact</h2>
-<form class="contact-form">
-<input placeholder="Your Name" required>
-<input type="email" placeholder="Your Email" required>
-<textarea placeholder="Message" required></textarea>
-<button>Send</button>
+<form class="contact-form" id="contactForm">
+<input id="nameInput" placeholder="Your Name" required>
+<input id="emailInput" type="email" placeholder="Your Email" required>
+<textarea id="messageInput" placeholder="Message" required></textarea>
+<button type="submit">Send</button>
 </form>
+
+<h3 style="text-align:center;margin-top:2rem;color:#00f7ff;">Backend would work like:</h3>
+<table class="backend-table" id="backendTable">
+  <tr>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Message</th>
+  </tr>
+</table>
 </section>
 
 <script>
@@ -385,7 +410,7 @@ hamburger.addEventListener("click", () => {
 
 links.forEach(link => {
   link.addEventListener("click", () => {
-    const targetId = link.getAttribute("href").substring(1); // remove #
+    const targetId = link.getAttribute("href").substring(1);
     const currentSection = document.elementFromPoint(window.innerWidth / 2, window.innerHeight / 2).closest("section");
     
     if (!currentSection || currentSection.id !== targetId) {
@@ -393,6 +418,23 @@ links.forEach(link => {
       hamburger.classList.remove("open");
     }
   });
+});
+
+/* CONTACT FORM TO TABLE */
+const contactForm = document.getElementById("contactForm");
+const backendTable = document.getElementById("backendTable");
+
+contactForm.addEventListener("submit", function(e){
+    e.preventDefault();
+    const name = document.getElementById("nameInput").value;
+    const email = document.getElementById("emailInput").value;
+    const message = document.getElementById("messageInput").value;
+
+    const newRow = document.createElement("tr");
+    newRow.innerHTML = `<td>${name}</td><td>${email}</td><td>${message}</td>`;
+    backendTable.appendChild(newRow);
+
+    contactForm.reset();
 });
 </script>
 </body>
