@@ -303,39 +303,32 @@ BCA student focused on animated UI & full-stack development.
 <img src="projects/clicker/clck.png">
 <h3>Clicker</h3></a>
 
-
-
-
-
-
-<a class="project-card" href="projects/inventory/index.html" target="_blank">
-<img src="projects/inventory/inventory.png">
-<h3>Inventory Management</h3></a>
-
-<a class="project-card" href="projects/game/TOH/index.html" target="_blank">
-<img src="projects/game/TOH/toh.png">
-<h3>TOH Game</h3></a>
-
-<a class="project-card" href="projects/game/TTT/index.html" target="_blank">
-<img src="projects/game/TTT/ttt.png">
-<h3>TTT Game</h3></a>
-
-<a class="project-card" href="projects/clicker/index.html" target="_blank">
-<img src="projects/clicker/clck.png">
-<h3>Clicker</h3></a>
-
 </div>
 </div>
 </section>
 
 <section id="contact">
 <h2>Contact</h2>
-<form class="contact-form">
-<input placeholder="Your Name" required>
-<input type="email" placeholder="Your Email" required>
-<textarea placeholder="Message" required></textarea>
-<button>Send</button>
+<form class="contact-form" id="contactForm">
+  <input placeholder="Your Name" required id="nameInput">
+  <input type="email" placeholder="Your Email" required id="emailInput">
+  <textarea placeholder="Message" required id="messageInput"></textarea>
+  <button type="submit">Send</button>
 </form>
+
+<h3 style="text-align:center;margin-top:2rem;color:#00f7ff;">Feedbacks Received</h3>
+<table id="feedbackTable" style="width:90%;margin:1rem auto;border-collapse:collapse;color:#fff;">
+  <thead>
+    <tr style="border-bottom:2px solid #00f7ff;">
+      <th style="padding:0.5rem;">Name</th>
+      <th style="padding:0.5rem;">Email</th>
+      <th style="padding:0.5rem;">Message</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- Feedback rows appear here -->
+  </tbody>
+</table>
 </section>
 
 <script>
@@ -385,7 +378,7 @@ hamburger.addEventListener("click", () => {
 
 links.forEach(link => {
   link.addEventListener("click", () => {
-    const targetId = link.getAttribute("href").substring(1); // remove #
+    const targetId = link.getAttribute("href").substring(1); 
     const currentSection = document.elementFromPoint(window.innerWidth / 2, window.innerHeight / 2).closest("section");
     
     if (!currentSection || currentSection.id !== targetId) {
@@ -393,6 +386,28 @@ links.forEach(link => {
       hamburger.classList.remove("open");
     }
   });
+});
+
+/* CONTACT FORM FEEDBACK TABLE */
+const form = document.getElementById("contactForm");
+const tableBody = document.querySelector("#feedbackTable tbody");
+
+form.addEventListener("submit", (e) => {
+  e.preventDefault(); // prevent page refresh
+
+  const name = document.getElementById("nameInput").value;
+  const email = document.getElementById("emailInput").value;
+  const message = document.getElementById("messageInput").value;
+
+  const row = document.createElement("tr");
+  row.innerHTML = `<td style="padding:0.5rem;">${name}</td>
+                   <td style="padding:0.5rem;">${email}</td>
+                   <td style="padding:0.5rem;">${message}</td>`;
+  tableBody.appendChild(row);
+
+  alert("✅ Feedback recorded!");
+
+  form.reset();
 });
 </script>
 </body>
