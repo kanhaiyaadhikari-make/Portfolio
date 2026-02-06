@@ -303,6 +303,27 @@ BCA student focused on animated UI & full-stack development.
 <img src="projects/clicker/clck.png">
 <h3>Clicker</h3></a>
 
+
+
+
+
+
+<a class="project-card" href="projects/inventory/index.html" target="_blank">
+<img src="projects/inventory/inventory.png">
+<h3>Inventory Management</h3></a>
+
+<a class="project-card" href="projects/game/TOH/index.html" target="_blank">
+<img src="projects/game/TOH/toh.png">
+<h3>TOH Game</h3></a>
+
+<a class="project-card" href="projects/game/TTT/index.html" target="_blank">
+<img src="projects/game/TTT/ttt.png">
+<h3>TTT Game</h3></a>
+
+<a class="project-card" href="projects/clicker/index.html" target="_blank">
+<img src="projects/clicker/clck.png">
+<h3>Clicker</h3></a>
+
 </div>
 </div>
 </section>
@@ -364,9 +385,13 @@ hamburger.addEventListener("click", () => {
 
 links.forEach(link => {
   link.addEventListener("click", () => {
-    // Fixed: always close menu on click
-    navLinks.classList.remove("active");
-    hamburger.classList.remove("open");
+    const targetId = link.getAttribute("href").substring(1); // remove #
+    const currentSection = document.elementFromPoint(window.innerWidth / 2, window.innerHeight / 2).closest("section");
+    
+    if (!currentSection || currentSection.id !== targetId) {
+      navLinks.classList.remove("active");
+      hamburger.classList.remove("open");
+    }
   });
 });
 </script>
