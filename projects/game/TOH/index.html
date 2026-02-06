@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Sorting Game</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+  :root {
+    --disk-count: 5;           /* Number of disks */
+    --tower-max-width: 200px;  /* Max tower width */
+    --tower-height: 400px;     /* Tower height */
+    --disk-min-width: 40px;     /* Min disk width */
+    --disk-width-step: 25px;   /* Width increase per disk size */
+    --disk-height: 40px;        /* Disk height */
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    background: linear-gradient(-45deg, #0d1b2a, #1b263b, #415a77, #1b263b);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    padding: 10px;
+  }
+
+  @keyframes gradientBG {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+  }
+
+  h3 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+    color:#fff;
+    text-align: center;
+    font-size: 2rem;
+  }
+
+  #status {
+    margin-bottom: 20px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    text-align: center;
+  }
+
+  .tower-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    width: 100%;
+    max-width: 1200px;
+    flex-grow: 1;
+    padding: 0 10px;
+    gap: 20px;
+  }
+
+  .tower {
+    flex: 1;
+    max-width: var(--tower-max-width);
+    height: var(--tower-height);
+    border: 2px solid #888;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    position: relative;
+    background: #111a27;
+    padding-bottom: 10px;
+    border-radius: 6px;
+    min-width: 80px;
+  }
+
+  .rod {
+    position: absolute;
+    bottom: 10px;
+    width: 6px;
+    height: 95%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 3px;
+    z-index: 0;
+  }
+
+  .tower[data-tower="A"] .rod,
+  .tower[data-tower="B"] .rod { background: #1b3a70; }
+  .tower[data-tower="C"] .rod { background: #b22222; }
+
+  .disk {
+    height: var(--disk-height);
+    margin: 5px 0;
+    border-radius: 50% / 25%;
+    background: #339af0;
+    color: white;
+    text-align: center;
+    line-height: var(--disk-height);
+    font-weight: bold;
+    cursor: grab;
+    z-index: 1;
+    position: relative;
+    transition: transform 0.2s;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .disk.dragging {
+    opacity: 0.7;
+    transform: scale(1.05);
+  }
+
+  .tower.highlight {
+    border-color: #5c7cfa;
+    box-shadow: 0 0 15px rgba(92,124,250,.7);
+  }
+
+  button {
+    margin-top: 20px;
+    background-color: #5c7cfa;
+    border: none;
+    color: white;
+    padding: 8px 20px;
+    font-size: 1rem;
+  }
+
+  button:hover { background-color: #3b5bdb; }
+
+  .end-screen {
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background: rgba(0,0,0,0.85);
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-size: 1.5rem;
+    text-align: center;
+    z-index: 999;
+    display: none;
+    padding: 20px;
+  }
+
+  .end-screen button {
+    margin-top: 20px;
+    background-color: #b22222;
+    font-size: 1rem;
+    padding: 10px 20px;
+  }
+
+  .end-screen button:hover { background-color: #ff4d4d; }
+
+  @media(max-width:768px){
+    .tower-container{ flex-direction: column; gap: 25px; align-items: center; }
+    .tower{ height: 250px; }
+    .disk{ height: 30px; line-height: 30px; }
+    h3{ font-size: 1.7rem; }
+    #status{ font-size: 1rem; }
+  }
+
+  @media(max-width:480px){
+    .tower{ max-width: 150px; min-width: 70px; }
+    .disk{ font-size: 0.8rem; }
+    button{ font-size: 0.9rem; padding: 6px 16px; }
+  }
+</style>
+</head>
+<body>
+<h3>Sorting Game</h3>
+<p id="status">Moves: 0</p>
+
+<div class="tower-container">
+  <div class="tower" data-tower="A"><div class="rod"></div></div>
+  <div class="tower" data-tower="B"><div class="rod"></div></div>
+  <div class="tower" data-tower="C"><div class="rod"></div></div>
+</div>
+
+<button class="btn" onclick="resetGame()">Reset</button>
+
+<div class="end-screen" id="endScreen">
+  <h2>🎉 You Won! 🎉</h2>
+  <p id="endMessage"></p>
+  <button onclick="resetGame()">Play Again</button>
+</div>
+
+<script>
+const DISKS = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--disk-count'));
+let towers;
+let moves = 0;
+
+const status = document.getElementById("status");
+const towerElems = document.querySelectorAll(".tower");
+const endScreen = document.getElementById("endScreen");
+const endMessage = document.getElementById("endMessage");
+
+function initGame() {
+  towers = {
+    A: Array.from({ length: DISKS }, (_, i) => DISKS - i),
+    B: [],
+    C: []
+  };
+  moves = 0;
+  endScreen.style.display = 'none';
+  render();
+}
+
+function render() {
+  towerElems.forEach(towerEl => {
+    const name = towerEl.dataset.tower;
+    towerEl.querySelectorAll(".disk").forEach(d => d.remove());
+
+    const towerWidth = towerEl.clientWidth;
+
+    towers[name].forEach(size => {
+      const disk = document.createElement("div");
+      disk.className = "disk";
+      disk.draggable = true;
+      disk.dataset.size = size;
+      disk.dataset.tower = name;
+
+      // disk width scales with tower width
+      let width = Math.min(towerWidth - 10, parseInt(getComputedStyle(document.documentElement).getPropertyValue('--disk-min-width')) + size * parseInt(getComputedStyle(document.documentElement).getPropertyValue('--disk-width-step')));
+      disk.style.width = width + 'px';
+      disk.textContent = size;
+
+      disk.addEventListener("dragstart", e => {
+        e.dataTransfer.setData("text/plain", `${size},${name}`);
+        disk.classList.add("dragging");
+      });
+
+      disk.addEventListener("dragend", e => {
+        disk.classList.remove("dragging");
+        render(); // illegal moves return disk
+      });
+
+      towerEl.appendChild(disk);
+    });
+  });
+
+  status.textContent = `Moves: ${moves}`;
+}
+
+// Drag & Drop Logic
+towerElems.forEach(towerEl => {
+  towerEl.addEventListener("dragover", e => e.preventDefault());
+  towerEl.addEventListener("dragenter", () => towerEl.classList.add("highlight"));
+  towerEl.addEventListener("dragleave", () => towerEl.classList.remove("highlight"));
+
+  towerEl.addEventListener("drop", e => {
+    e.preventDefault();
+    towerEl.classList.remove("highlight");
+    const data = e.dataTransfer.getData("text/plain");
+    const [size, fromTower] = data.split(",");
+    const toTower = towerEl.dataset.tower;
+
+    const topDisk = towers[toTower].at(-1);
+    if (!topDisk || parseInt(size) < topDisk) {
+      towers[fromTower].pop();
+      towers[toTower].push(parseInt(size));
+      moves++;
+      render();
+      checkWin();
+    } else {
+      render(); // illegal move returns disk
+    }
+  });
+});
+
+function checkWin() {
+  if (towers.C.length === DISKS) {
+    const optimal = 2 ** DISKS - 1;
+    endMessage.textContent = `You completed the puzzle in ${moves} moves.\nOptimal moves: ${optimal}.`;
+    endScreen.style.display = 'flex';
+  }
+}
+
+function resetGame() { initGame(); }
+
+initGame();
+</script>
+</body>
+</html>

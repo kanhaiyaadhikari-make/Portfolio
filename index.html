@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kanhaiya Adhikari | Neon Portfolio</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-snap-type:y mandatory}
+body{
+    font-family:'Segoe UI',sans-serif;
+    background:#000;
+    color:#e0e0e0;
+    overflow-x:hidden;
+}
+
+#bgCanvas{
+    position:fixed;
+    inset:0;
+    z-index:-1;
+    background:#000;
+}
+
+/* NAVBAR */
+.navbar{
+    position:fixed;
+    top:0;
+    width:100%;
+    padding:1rem;
+    background:rgba(0,0,0,.75);
+    backdrop-filter:blur(6px);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    z-index:10;
+}
+.navbar .logo{color:#fff;font-weight:bold;font-size:1.2rem;}
+.nav-links {
+    display: flex;
+    gap: 2rem;
+}
+.nav-links a{
+    color:#fff;
+    text-decoration:none;
+    padding:.4rem .9rem;
+    border-radius:6px;
+    transition:.25s;
+}
+.nav-links a:hover{
+    color:#ff4d4d;
+    transform:scale(1.1);
+    box-shadow:0 0 12px rgba(255,77,77,.6);
+}
+
+/* HAMBURGER */
+.hamburger{
+    display:none;
+    flex-direction: column;
+    justify-content: space-between;
+    width:25px;
+    height:18px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+.hamburger span{
+    display:block;
+    height:3px;
+    width:100%;
+    background:#fff;
+    border-radius:2px;
+    transition:0.3s;
+}
+
+/* SECTIONS */
+section{
+    min-height:100vh;
+    scroll-snap-align:start;
+    padding:6rem 1.5rem;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+}
+h2{text-align:center;margin-bottom:2.5rem;color:#00f7ff}
+
+/* HERO */
+.hero{text-align:center}
+.hero h1{font-size:3.2rem}
+.hero p{margin-top:1rem;font-size:1.2rem;color:#ccc}
+.hero .btn{
+    margin-top:2rem;
+    padding:.7rem 2rem;
+    background:#0a0a0a;
+    border:2px solid #ffd43b;
+    color:#fff;
+    border-radius:10px;
+    cursor:pointer;
+    transition:.3s;
+}
+.hero .btn:hover{
+    transform:scale(1.12);
+    box-shadow:0 0 35px rgba(255,212,59,.6);
+}
+
+/* SKILLS */
+.skills-list{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:1.5rem;
+    list-style:none;
+}
+.skill-item{
+    padding:.8rem 1.6rem;
+    background:#0a0a0a;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,247,255,.25);
+    transition:.3s;
+}
+.skill-item:hover{
+    transform:scale(1.2);
+    box-shadow:0 0 30px rgba(0,247,255,.6);
+}
+
+/* PROJECTS */
+.project-slider{
+    width:85vw;
+    height:70vh;
+    margin:auto;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+}
+.project-track{
+    display:flex;
+    gap:1.5rem;
+    width:max-content;
+}
+.project-card{
+    width:300px;
+    height:55vh;
+    background:#050505;
+    padding:1.5rem;
+    border-radius:16px;
+    color:#fff;
+    text-decoration:none;
+    border:2px solid rgba(0,247,255,.4);
+    box-shadow:0 0 14px rgba(0,247,255,.6);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    transition:.35s;
+}
+.project-card img{
+    width:100%;
+    height:60%;
+    object-fit:cover;
+    border-radius:12px;
+    margin-bottom:1rem;
+}
+.project-card:hover{
+    transform:translateY(-12px) scale(1.08);
+    box-shadow:0 0 45px rgba(255,77,77,.9);
+}
+
+/* CONTACT */
+.contact-form{
+    max-width:500px;
+    margin:auto;
+    display:flex;
+    flex-direction:column;
+    gap:1rem;
+    padding:2rem;
+    background:rgba(0,0,0,.8);
+    border-radius:12px;
+    border:2px solid rgba(0,247,255,.5);
+    transition:.5s;
+}
+.contact-form:hover{
+    transform:scale(1.15);
+    box-shadow:
+        0 0 30px #00f7ff,
+        0 0 60px rgba(0,247,255,.6),
+        inset 0 0 30px rgba(0,247,255,.3);
+    z-index:20;
+}
+.contact-form input,
+.contact-form textarea{
+    padding:.9rem;
+    background:#0a0a0a;
+    border:2px solid rgba(0,247,255,.4);
+    border-radius:6px;
+    color:#fff;
+}
+.contact-form button{
+    padding:.8rem;
+    background:#0a0a0a;
+    border:2px solid #ffd43b;
+    color:#fff;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+/* MOBILE */
+@media(max-width:500px){
+    .contact-form:hover{transform:scale(1.05)}
+    .hamburger{display:flex;}
+    .nav-links{
+        position: absolute;
+        top:100%;
+        right:0;
+        background: rgba(0,0,0,0.9);
+        flex-direction: column;
+        width: 200px;
+        text-align: center;
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+        border-left: 2px solid #00f7ff;
+    }
+    .nav-links.active{
+        transform: translateX(0);
+    }
+    .nav-links a{
+        padding:1rem;
+        border-bottom:1px solid #00f7ff;
+    }
+}
+.hamburger.open span:nth-child(1){
+  transform: rotate(45deg) translate(5px,5px);
+}
+.hamburger.open span:nth-child(2){
+  opacity:0;
+}
+.hamburger.open span:nth-child(3){
+  transform: rotate(-45deg) translate(5px,-5px);
+}
+</style>
+</head>
+
+<body>
+<canvas id="bgCanvas"></canvas>
+
+<header class="navbar">
+  <div class="logo">K.A</div>
+  <button class="hamburger" aria-label="Toggle Menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+  <nav class="nav-links">
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<section id="home" class="hero">
+<h1>Kanhaiya Adhikari</h1>
+<p>Full Stack Developer</p>
+<a href="#projects"><button class="btn">Projects</button></a>
+</section>
+
+<section id="about">
+<h2>About Me</h2>
+<p style="text-align:center;max-width:720px;margin:auto">
+BCA student focused on animated UI & full-stack development.
+</p>
+</section>
+
+<section id="skills">
+<h2>Skills</h2>
+<ul class="skills-list">
+<li class="skill-item">HTML</li>
+<li class="skill-item">CSS</li>
+<li class="skill-item">JavaScript</li>
+<li class="skill-item">PHP</li>
+<li class="skill-item">MySQL</li>
+<li class="skill-item">Git & GitHub</li>
+</ul>
+</section>
+
+<section id="projects">
+<h2>Projects</h2>
+<div class="project-slider">
+<div class="project-track">
+
+<a class="project-card" href="projects/inventory/index.html" target="_blank">
+<img src="projects/inventory/inventory.png">
+<h3>Inventory Management</h3></a>
+
+<a class="project-card" href="projects/game/TOH/index.html" target="_blank">
+<img src="projects/game/TOH/toh.png">
+<h3>TOH Game</h3></a>
+
+<a class="project-card" href="projects/game/TTT/index.html" target="_blank">
+<img src="projects/game/TTT/ttt.png">
+<h3>TTT Game</h3></a>
+
+<a class="project-card" href="projects/clicker/index.html" target="_blank">
+<img src="projects/clicker/clck.png">
+<h3>Clicker</h3></a>
+
+
+
+
+
+
+<a class="project-card" href="projects/inventory/index.html" target="_blank">
+<img src="projects/inventory/inventory.png">
+<h3>Inventory Management</h3></a>
+
+<a class="project-card" href="projects/game/TOH/index.html" target="_blank">
+<img src="projects/game/TOH/toh.png">
+<h3>TOH Game</h3></a>
+
+<a class="project-card" href="projects/game/TTT/index.html" target="_blank">
+<img src="projects/game/TTT/ttt.png">
+<h3>TTT Game</h3></a>
+
+<a class="project-card" href="projects/clicker/index.html" target="_blank">
+<img src="projects/clicker/clck.png">
+<h3>Clicker</h3></a>
+
+</div>
+</div>
+</section>
+
+<section id="contact">
+<h2>Contact</h2>
+<form class="contact-form">
+<input placeholder="Your Name" required>
+<input type="email" placeholder="Your Email" required>
+<textarea placeholder="Message" required></textarea>
+<button>Send</button>
+</form>
+</section>
+
+<script>
+/* BACKGROUND */
+const canvas=document.getElementById("bgCanvas"),ctx=canvas.getContext("2d");
+function resize(){canvas.width=innerWidth;canvas.height=innerHeight}
+resize();addEventListener("resize",resize);
+let stars=[...Array(260)].map(()=>({a:Math.random()*6.28,d:Math.random()*900,s:.005+Math.random()*.012}));
+(function anim(){
+ctx.fillStyle="rgba(0,0,0,.22)";
+ctx.fillRect(0,0,canvas.width,canvas.height);
+stars.forEach(s=>{
+s.a+=s.s;s.d+=.085;
+if(s.d>2000)s.d=0;
+ctx.fillStyle="#00f7ff";
+ctx.fillRect(
+canvas.width/2+Math.cos(s.a)*s.d,
+canvas.height/2+Math.sin(s.a)*s.d,2,2);
+});
+requestAnimationFrame(anim);
+})();
+
+/* INFINITE SLIDER */
+const track=document.querySelector(".project-track");
+let x=0,speed=.5,reset=track.scrollWidth/2;
+function slide(){
+x-=speed;
+if(Math.abs(x)>=reset)x=0;
+track.style.transform=`translateX(${x}px)`;
+requestAnimationFrame(slide);
+}
+document.querySelectorAll(".project-card").forEach(c=>{
+c.onmouseenter=()=>speed=.1;
+c.onmouseleave=()=>speed=.5;
+});
+slide();
+
+/* HAMBURGER TOGGLE + AUTO-CLOSE ON LINK CLICK */
+const hamburger = document.querySelector(".hamburger");
+const navLinks = document.querySelector(".nav-links");
+const links = document.querySelectorAll(".nav-links a");
+
+hamburger.addEventListener("click", () => {
+  navLinks.classList.toggle("active");
+  hamburger.classList.toggle("open");
+});
+
+links.forEach(link => {
+  link.addEventListener("click", () => {
+    const targetId = link.getAttribute("href").substring(1); // remove #
+    const currentSection = document.elementFromPoint(window.innerWidth / 2, window.innerHeight / 2).closest("section");
+    
+    if (!currentSection || currentSection.id !== targetId) {
+      navLinks.classList.remove("active");
+      hamburger.classList.remove("open");
+    }
+  });
+});
+</script>
+</body>
+</html>

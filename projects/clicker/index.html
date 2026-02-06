@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Ugh Clicker</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #0d1b2a;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+    position: relative;
+    padding: 20px;
+  }
+
+  h1 { font-size: 2.5rem; margin-bottom: 10px; text-align: center; z-index:2; position: relative; }
+
+  #score, #cps {
+    font-size: 1.5rem;
+    margin: 5px 0;
+    z-index:2; position: relative;
+  }
+
+  #clickButton {
+    background-color: #00bfa5;
+    border: none;
+    border-radius: 15px;
+    padding: 40px 60px;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #fff;
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.2s, background-color 0.2s;
+    z-index:2; position: relative;
+  }
+
+  #clickButton:active {
+    transform: scale(0.95);
+    box-shadow: 0 0 25px #00ffe0;
+    background-color: #00d4b2;
+  }
+
+  /* combo flash */
+  #clickButton.flash {
+    animation: flashAnim 0.3s;
+  }
+
+  @keyframes flashAnim {
+    0% { box-shadow: 0 0 10px #00ffe0; transform: scale(1.05);}
+    50% { box-shadow: 0 0 30px #00ffe0; transform: scale(1.1);}
+    100% { box-shadow: 0 0 10px #00ffe0; transform: scale(1);}
+  }
+
+  /* Reset button */
+  #resetButton {
+    margin-top: 20px;
+    background-color: #5c7cfa;
+    border: none;
+    color: white;
+    padding: 10px 25px;
+    font-size: 1rem;
+    border-radius: 10px;
+    cursor: pointer;
+    z-index:2; position: relative;
+    transition: background-color 0.2s;
+  }
+
+  #resetButton:hover { background-color: #3b5bdb; }
+
+  /* Floating shapes background */
+  .shape {
+    position: absolute;
+    font-weight: bold;
+    color: rgba(0,255,200,0.2);
+    user-select: none;
+    pointer-events: none;
+    animation-name: floatShape;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+  }
+
+  @keyframes floatShape {
+    0% { transform: translateY(100vh) rotate(0deg); opacity:0; }
+    10% { opacity:0.4; }
+    50% { opacity:0.6; }
+    100% { transform: translateY(-20vh) rotate(360deg); opacity:0; }
+  }
+
+  @media(max-width:480px){
+    #clickButton { padding: 25px 40px; font-size: 2rem; }
+    h1 { font-size: 2rem; }
+    #score, #cps { font-size: 1.2rem; }
+    #resetButton { font-size: 0.9rem; padding: 8px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Ugh Clicker</h1>
+<p id="score">Score: 0</p>
+<p id="cps">Clicks/sec: 0</p>
+<button id="clickButton">UGH!</button>
+<button id="resetButton">Reset</button>
+
+<script>
+let score = 0;
+let clickTimes = [];
+
+const scoreEl = document.getElementById('score');
+const cpsEl = document.getElementById('cps');
+const button = document.getElementById('clickButton');
+const resetButton = document.getElementById('resetButton');
+
+// Increment score
+function handleClick(){
+  score++;
+  scoreEl.textContent = `Score: ${score}`;
+
+  // Flash animation
+  button.classList.remove('flash');
+  void button.offsetWidth; // trigger reflow
+  button.classList.add('flash');
+
+  // Update clicks per second
+  const now = Date.now();
+  clickTimes.push(now);
+  clickTimes = clickTimes.filter(t => now - t <= 1000);
+  cpsEl.textContent = `Clicks/sec: ${clickTimes.length}`;
+}
+
+// Click by pointer
+button.addEventListener('click', handleClick);
+
+// Click by spacebar
+document.addEventListener('keydown', e => {
+  if(e.code === 'Space'){
+    e.preventDefault();
+    handleClick();
+  }
+});
+
+// Reset game
+resetButton.addEventListener('click', () => {
+  score = 0;
+  clickTimes = [];
+  scoreEl.textContent = `Score: ${score}`;
+  cpsEl.textContent = `Clicks/sec: 0`;
+});
+
+// Floating background shapes
+function createShapes(){
+  const shapes = ['U','G','H'];
+  for(let i=0;i<25;i++){
+    const span = document.createElement('span');
+    span.className='shape';
+    span.textContent = shapes[Math.floor(Math.random()*shapes.length)];
+    span.style.left = Math.random()*100 + 'vw';
+    span.style.fontSize = 10 + Math.random()*25 + 'px';
+    span.style.animationDuration = 5 + Math.random()*10 + 's';
+    document.body.appendChild(span);
+  }
+}
+
+createShapes();
+</script>
+</body>
+</html>
