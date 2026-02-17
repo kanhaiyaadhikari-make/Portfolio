@@ -31,7 +31,7 @@ body{
     background:rgba(0,0,0,.75);
     backdrop-filter:blur(6px);
     display:flex;
-    justify-content:center; /* center horizontally */
+    justify-content:center;
     z-index:10;
 }
 .nav-links {
@@ -51,26 +51,6 @@ body{
     box-shadow:0 0 12px rgba(255,77,77,.6);
 }
 
-/* HAMBURGER */
-.hamburger{
-    display:none;
-    flex-direction: column;
-    justify-content: space-between;
-    width:25px;
-    height:18px;
-    background: none;
-    border: none;
-    cursor: pointer;
-}
-.hamburger span{
-    display:block;
-    height:3px;
-    width:100%;
-    background:#fff;
-    border-radius:2px;
-    transition:0.3s;
-}
-
 /* SECTIONS */
 section{
     min-height:100vh;
@@ -79,14 +59,14 @@ section{
     display:flex;
     flex-direction:column;
     justify-content:center;
-    align-items:center; /* center all section content horizontally */
+    align-items:center;
 }
 h2{text-align:center;margin-bottom:2.5rem;color:#00f7ff}
 
 /* HERO */
 .hero{text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center;}
 .hero img.hero-logo{
-    height:120px; /* 300% bigger */
+    height:120px;
     margin-bottom:1.5rem;
 }
 .hero h1{font-size:3.2rem}
@@ -126,47 +106,6 @@ h2{text-align:center;margin-bottom:2.5rem;color:#00f7ff}
     box-shadow:0 0 30px rgba(0,247,255,.6);
 }
 
-/* PROJECTS */
-.project-slider{
-    width:85vw;
-    height:70vh;
-    margin:auto;
-    overflow:hidden;
-    display:flex;
-    align-items:center;
-}
-.project-track{
-    display:flex;
-    gap:1.5rem;
-    width:max-content;
-}
-.project-card{
-    width:300px;
-    height:55vh;
-    background:#050505;
-    padding:1.5rem;
-    border-radius:16px;
-    color:#fff;
-    text-decoration:none;
-    border:2px solid rgba(0,247,255,.4);
-    box-shadow:0 0 14px rgba(0,247,255,.6);
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    transition:.35s;
-}
-.project-card img{
-    width:100%;
-    height:60%;
-    object-fit:cover;
-    border-radius:12px;
-    margin-bottom:1rem;
-}
-.project-card:hover{
-    transform:translateY(-12px) scale(1.08);
-    box-shadow:0 0 45px rgba(255,77,77,.9);
-}
-
 /* CONTACT */
 .contact-form{
     max-width:500px;
@@ -178,15 +117,6 @@ h2{text-align:center;margin-bottom:2.5rem;color:#00f7ff}
     background:rgba(0,0,0,.8);
     border-radius:12px;
     border:2px solid rgba(0,247,255,.5);
-    transition:.5s;
-}
-.contact-form:hover{
-    transform:scale(1.15);
-    box-shadow:
-        0 0 30px #00f7ff,
-        0 0 60px rgba(0,247,255,.6),
-        inset 0 0 30px rgba(0,247,255,.3);
-    z-index:20;
 }
 .contact-form input,
 .contact-form textarea{
@@ -205,7 +135,7 @@ h2{text-align:center;margin-bottom:2.5rem;color:#00f7ff}
     cursor:pointer;
 }
 
-/* BACKEND TABLE */
+/* TABLE */
 .backend-table{
     margin:auto;
     margin-top:1rem;
@@ -214,8 +144,6 @@ h2{text-align:center;margin-bottom:2.5rem;color:#00f7ff}
     max-width:600px;
     background:rgba(0,0,0,.8);
     border:2px solid rgba(0,247,255,.5);
-    border-radius:12px;
-    box-shadow:0 0 30px #00f7ff,0 0 60px rgba(0,247,255,.6),inset 0 0 30px rgba(0,247,255,.3);
     color:#fff;
     text-align:center;
 }
@@ -223,128 +151,29 @@ h2{text-align:center;margin-bottom:2.5rem;color:#00f7ff}
 .backend-table td{
     border:1px solid rgba(0,247,255,.5);
     padding:0.7rem;
-    border-radius:6px;
 }
 
-/* MOBILE */
-@media(max-width:500px){
-    .contact-form:hover{transform:scale(1.05)}
-    .hamburger{display:flex;}
-    .nav-links{
-        position: absolute;
-        top:100%;
-        right:0;
-        background: rgba(0,0,0,0.9);
-        flex-direction: column;
-        width: 200px;
-        text-align: center;
-        transform: translateX(100%);
-        transition: transform 0.3s ease;
-        border-left: 2px solid #00f7ff;
-    }
-    .nav-links.active{
-        transform: translateX(0);
-    }
-    .nav-links a{
-        padding:1rem;
-        border-bottom:1px solid #00f7ff;
-    }
+/* CLEAR BUTTON */
+.clear-btn{
+    margin-top:1rem;
+    padding:.6rem 1.5rem;
+    background:#111;
+    border:2px solid #ff4d4d;
+    color:#fff;
+    border-radius:8px;
+    cursor:pointer;
 }
-.hamburger.open span:nth-child(1){
-  transform: rotate(45deg) translate(5px,5px);
-}
-.hamburger.open span:nth-child(2){
-  opacity:0;
-}
-.hamburger.open span:nth-child(3){
-  transform: rotate(-45deg) translate(5px,-5px);
+.clear-btn:hover{
+    box-shadow:0 0 15px rgba(255,77,77,.7);
 }
 </style>
 </head>
 
 <body>
-<canvas id="bgCanvas"></canvas>
-
-<header class="navbar">
-  <nav class="nav-links">
-    <a href="#home">Home</a>
-    <a href="#about">About</a>
-    <a href="#skills">Skills</a>
-    <a href="#projects">Projects</a>
-    <a href="#contact">Contact</a>
-  </nav>
-</header>
-
-<section id="home" class="hero">
-<!-- Hero logo -->
-<img src="projects/1000029505.jpg" alt="K.A Logo" class="hero-logo">
-<h1>Kanhaiya Adhikari</h1>
-<p>Full Stack Developer</p>
-<a href="#projects"><button class="btn">Projects</button></a>
-</section>
-
-<section id="about">
-<h2>About Me</h2>
-<p style="text-align:center;max-width:720px;margin:auto">
-BCA student focused on animated UI & full-stack development.
-</p>
-</section>
-
-<section id="skills">
-<h2>Skills</h2>
-<ul class="skills-list">
-<li class="skill-item">HTML</li>
-<li class="skill-item">CSS</li>
-<li class="skill-item">JavaScript</li>
-<li class="skill-item">PHP</li>
-<li class="skill-item">MySQL</li>
-<li class="skill-item">Git & GitHub</li>
-</ul>
-</section>
-
-<section id="projects">
-<h2>Projects</h2>
-<div class="project-slider">
-<div class="project-track">
-
-<a class="project-card" href="projects/inventory/index.html" target="_blank">
-<img src="projects/inventory/inventory.png">
-<h3>Inventory Management</h3></a>
-
-<a class="project-card" href="projects/game/TOH/index.html" target="_blank">
-<img src="projects/game/TOH/toh.png">
-<h3>TOH Game</h3></a>
-
-<a class="project-card" href="projects/game/TTT/index.html" target="_blank">
-<img src="projects/game/TTT/ttt.png">
-<h3>TTT Game</h3></a>
-
-<a class="project-card" href="projects/clicker/index.html" target="_blank">
-<img src="projects/clicker/clck.png">
-<h3>Clicker</h3></a>
-
-<a class="project-card" href="projects/inventory/index.html" target="_blank">
-<img src="projects/inventory/inventory.png">
-<h3>Inventory Management</h3></a>
-
-<a class="project-card" href="projects/game/TOH/index.html" target="_blank">
-<img src="projects/game/TOH/toh.png">
-<h3>TOH Game</h3></a>
-
-<a class="project-card" href="projects/game/TTT/index.html" target="_blank">
-<img src="projects/game/TTT/ttt.png">
-<h3>TTT Game</h3></a>
-
-<a class="project-card" href="projects/clicker/index.html" target="_blank">
-<img src="projects/clicker/clck.png">
-<h3>Clicker</h3></a>
-
-</div>
-</div>
-</section>
 
 <section id="contact">
 <h2>Contact</h2>
+
 <form class="contact-form" id="contactForm">
 <input id="nameInput" placeholder="Your Name" required>
 <input id="emailInput" type="email" placeholder="Your Email" required>
@@ -352,84 +181,75 @@ BCA student focused on animated UI & full-stack development.
 <button type="submit">Send</button>
 </form>
 
-<h3 style="text-align:center;margin-top:2rem;color:#00f7ff;">Backend would work like:</h3>
+<h3 style="text-align:center;margin-top:2rem;color:#00f7ff;">
+Stored Messages:
+</h3>
+
 <table class="backend-table" id="backendTable">
-  <tr>
-    <th>Name</th>
-    <th>Email</th>
-    <th>Message</th>
-  </tr>
+<tr>
+<th>Name</th>
+<th>Email</th>
+<th>Message</th>
+</tr>
 </table>
+
+<button class="clear-btn" id="clearData">Clear All Messages</button>
+
 </section>
 
 <script>
-/* BACKGROUND */
-const canvas=document.getElementById("bgCanvas"),ctx=canvas.getContext("2d");
-function resize(){canvas.width=innerWidth;canvas.height=innerHeight}
-resize();addEventListener("resize",resize);
-let stars=[...Array(260)].map(()=>({a:Math.random()*6.28,d:Math.random()*900,s:.005+Math.random()*.012}));
-(function anim(){
-ctx.fillStyle="rgba(0,0,0,.22)";
-ctx.fillRect(0,0,canvas.width,canvas.height);
-stars.forEach(s=>{
-s.a+=s.s;s.d+=.085;
-if(s.d>2000)s.d=0;
-ctx.fillStyle="#00f7ff";
-ctx.fillRect(
-canvas.width/2+Math.cos(s.a)*s.d,
-canvas.height/2+Math.sin(s.a)*s.d,2,2);
-});
-requestAnimationFrame(anim);
-})();
-
-/* INFINITE SLIDER */
-const track=document.querySelector(".project-track");
-let x=0,speed=.5,reset=track.scrollWidth/2;
-function slide(){
-x-=speed;
-if(Math.abs(x)>=reset)x=0;
-track.style.transform=`translateX(${x}px)`;
-requestAnimationFrame(slide);
-}
-document.querySelectorAll(".project-card").forEach(c=>{
-c.onmouseenter=()=>speed=.1;
-c.onmouseleave=()=>speed=.5;
-});
-slide();
-
-/* HAMBURGER TOGGLE + AUTO-CLOSE ON LINK CLICK */
-const hamburger = document.querySelector(".hamburger");
-const navLinks = document.querySelector(".nav-links");
-const links = document.querySelectorAll(".nav-links a");
-
-hamburger.addEventListener("click", () => {
-  navLinks.classList.toggle("active");
-  hamburger.classList.toggle("open");
-});
-
-links.forEach(link => {
-  link.addEventListener("click", () => {
-    navLinks.classList.remove("active");
-    hamburger.classList.remove("open");
-  });
-});
-
-/* CONTACT FORM TO TABLE */
 const contactForm = document.getElementById("contactForm");
 const backendTable = document.getElementById("backendTable");
+const clearBtn = document.getElementById("clearData");
 
+// Load saved data
+window.addEventListener("DOMContentLoaded", () => {
+    const savedData = JSON.parse(localStorage.getItem("contactData")) || [];
+    savedData.forEach(entry => addRow(entry.name, entry.email, entry.message));
+});
+
+// Submit form
 contactForm.addEventListener("submit", function(e){
     e.preventDefault();
+
     const name = document.getElementById("nameInput").value;
     const email = document.getElementById("emailInput").value;
     const message = document.getElementById("messageInput").value;
 
-    const newRow = document.createElement("tr");
-    newRow.innerHTML = `<td>${name}</td><td>${email}</td><td>${message}</td>`;
-    backendTable.appendChild(newRow);
+    const newEntry = { name, email, message };
 
+    const existingData = JSON.parse(localStorage.getItem("contactData")) || [];
+    existingData.push(newEntry);
+
+    localStorage.setItem("contactData", JSON.stringify(existingData));
+
+    addRow(name, email, message);
     contactForm.reset();
 });
+
+// Add row to table
+function addRow(name, email, message) {
+    const newRow = document.createElement("tr");
+    newRow.innerHTML = `
+        <td>${name}</td>
+        <td>${email}</td>
+        <td>${message}</td>
+    `;
+    backendTable.appendChild(newRow);
+}
+
+// Clear all data
+clearBtn.addEventListener("click", () => {
+    localStorage.removeItem("contactData");
+    backendTable.innerHTML = `
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Message</th>
+        </tr>
+    `;
+});
 </script>
+
 </body>
 </html>
