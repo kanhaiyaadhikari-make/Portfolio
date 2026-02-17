@@ -35,8 +35,8 @@ body{
     z-index:10;
 }
 .nav-links {
-    display: flex;
-    gap: 2rem;
+    display:flex;
+    gap:2rem;
 }
 .nav-links a{
     color:#fff;
@@ -64,7 +64,7 @@ section{
 h2{text-align:center;margin-bottom:2.5rem;color:#00f7ff}
 
 /* HERO */
-.hero{text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center;}
+.hero{text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;}
 .hero img.hero-logo{
     height:120px;
     margin-bottom:1.5rem;
@@ -106,6 +106,47 @@ h2{text-align:center;margin-bottom:2.5rem;color:#00f7ff}
     box-shadow:0 0 30px rgba(0,247,255,.6);
 }
 
+/* PROJECTS */
+.project-slider{
+    width:85vw;
+    height:70vh;
+    margin:auto;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+}
+.project-track{
+    display:flex;
+    gap:1.5rem;
+    width:max-content;
+}
+.project-card{
+    width:300px;
+    height:55vh;
+    background:#050505;
+    padding:1.5rem;
+    border-radius:16px;
+    color:#fff;
+    text-decoration:none;
+    border:2px solid rgba(0,247,255,.4);
+    box-shadow:0 0 14px rgba(0,247,255,.6);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    transition:.35s;
+}
+.project-card img{
+    width:100%;
+    height:60%;
+    object-fit:cover;
+    border-radius:12px;
+    margin-bottom:1rem;
+}
+.project-card:hover{
+    transform:translateY(-12px) scale(1.08);
+    box-shadow:0 0 45px rgba(255,77,77,.9);
+}
+
 /* CONTACT */
 .contact-form{
     max-width:500px;
@@ -117,6 +158,10 @@ h2{text-align:center;margin-bottom:2.5rem;color:#00f7ff}
     background:rgba(0,0,0,.8);
     border-radius:12px;
     border:2px solid rgba(0,247,255,.5);
+    transition:.5s;
+}
+.contact-form:hover{
+    transform:scale(1.1);
 }
 .contact-form input,
 .contact-form textarea{
@@ -135,7 +180,6 @@ h2{text-align:center;margin-bottom:2.5rem;color:#00f7ff}
     cursor:pointer;
 }
 
-/* TABLE */
 .backend-table{
     margin:auto;
     margin-top:1rem;
@@ -153,7 +197,6 @@ h2{text-align:center;margin-bottom:2.5rem;color:#00f7ff}
     padding:0.7rem;
 }
 
-/* CLEAR BUTTON */
 .clear-btn{
     margin-top:1rem;
     padding:.6rem 1.5rem;
@@ -170,6 +213,57 @@ h2{text-align:center;margin-bottom:2.5rem;color:#00f7ff}
 </head>
 
 <body>
+<canvas id="bgCanvas"></canvas>
+
+<header class="navbar">
+<nav class="nav-links">
+<a href="#home">Home</a>
+<a href="#about">About</a>
+<a href="#skills">Skills</a>
+<a href="#projects">Projects</a>
+<a href="#contact">Contact</a>
+</nav>
+</header>
+
+<section id="home" class="hero">
+<img src="projects/1000029505.jpg" class="hero-logo">
+<h1>Kanhaiya Adhikari</h1>
+<p>Full Stack Developer</p>
+<a href="#projects"><button class="btn">Projects</button></a>
+</section>
+
+<section id="about">
+<h2>About Me</h2>
+<p style="text-align:center;max-width:720px;margin:auto">
+BCA student focused on animated UI & full-stack development.
+</p>
+</section>
+
+<section id="skills">
+<h2>Skills</h2>
+<ul class="skills-list">
+<li class="skill-item">HTML</li>
+<li class="skill-item">CSS</li>
+<li class="skill-item">JavaScript</li>
+<li class="skill-item">PHP</li>
+<li class="skill-item">MySQL</li>
+<li class="skill-item">Git & GitHub</li>
+</ul>
+</section>
+
+<section id="projects">
+<h2>Projects</h2>
+<div class="project-slider">
+<div class="project-track">
+
+<a class="project-card" href="#" target="_blank"><h3>Inventory Management</h3></a>
+<a class="project-card" href="#" target="_blank"><h3>TOH Game</h3></a>
+<a class="project-card" href="#" target="_blank"><h3>TTT Game</h3></a>
+<a class="project-card" href="#" target="_blank"><h3>Clicker</h3></a>
+
+</div>
+</div>
+</section>
 
 <section id="contact">
 <h2>Contact</h2>
@@ -181,9 +275,7 @@ h2{text-align:center;margin-bottom:2.5rem;color:#00f7ff}
 <button type="submit">Send</button>
 </form>
 
-<h3 style="text-align:center;margin-top:2rem;color:#00f7ff;">
-Stored Messages:
-</h3>
+<h3 style="margin-top:2rem;color:#00f7ff;">Stored Messages:</h3>
 
 <table class="backend-table" id="backendTable">
 <tr>
@@ -198,56 +290,56 @@ Stored Messages:
 </section>
 
 <script>
-const contactForm = document.getElementById("contactForm");
-const backendTable = document.getElementById("backendTable");
-const clearBtn = document.getElementById("clearData");
+/* BACKGROUND ANIMATION */
+const canvas=document.getElementById("bgCanvas"),ctx=canvas.getContext("2d");
+function resize(){canvas.width=innerWidth;canvas.height=innerHeight}
+resize();addEventListener("resize",resize);
+let stars=[...Array(260)].map(()=>({a:Math.random()*6.28,d:Math.random()*900,s:.005+Math.random()*.012}));
+(function anim(){
+ctx.fillStyle="rgba(0,0,0,.22)";
+ctx.fillRect(0,0,canvas.width,canvas.height);
+stars.forEach(s=>{
+s.a+=s.s;s.d+=.085;
+if(s.d>2000)s.d=0;
+ctx.fillStyle="#00f7ff";
+ctx.fillRect(canvas.width/2+Math.cos(s.a)*s.d,canvas.height/2+Math.sin(s.a)*s.d,2,2);
+});
+requestAnimationFrame(anim);
+})();
 
-// Load saved data
-window.addEventListener("DOMContentLoaded", () => {
-    const savedData = JSON.parse(localStorage.getItem("contactData")) || [];
-    savedData.forEach(entry => addRow(entry.name, entry.email, entry.message));
+/* FORM STORAGE */
+const contactForm=document.getElementById("contactForm");
+const backendTable=document.getElementById("backendTable");
+const clearBtn=document.getElementById("clearData");
+
+window.addEventListener("DOMContentLoaded",()=>{
+const saved=JSON.parse(localStorage.getItem("contactData"))||[];
+saved.forEach(e=>addRow(e.name,e.email,e.message));
 });
 
-// Submit form
-contactForm.addEventListener("submit", function(e){
-    e.preventDefault();
+contactForm.addEventListener("submit",function(e){
+e.preventDefault();
+const name=nameInput.value;
+const email=emailInput.value;
+const message=messageInput.value;
 
-    const name = document.getElementById("nameInput").value;
-    const email = document.getElementById("emailInput").value;
-    const message = document.getElementById("messageInput").value;
-
-    const newEntry = { name, email, message };
-
-    const existingData = JSON.parse(localStorage.getItem("contactData")) || [];
-    existingData.push(newEntry);
-
-    localStorage.setItem("contactData", JSON.stringify(existingData));
-
-    addRow(name, email, message);
-    contactForm.reset();
+const entry={name,email,message};
+const data=JSON.parse(localStorage.getItem("contactData"))||[];
+data.push(entry);
+localStorage.setItem("contactData",JSON.stringify(data));
+addRow(name,email,message);
+contactForm.reset();
 });
 
-// Add row to table
-function addRow(name, email, message) {
-    const newRow = document.createElement("tr");
-    newRow.innerHTML = `
-        <td>${name}</td>
-        <td>${email}</td>
-        <td>${message}</td>
-    `;
-    backendTable.appendChild(newRow);
+function addRow(name,email,message){
+const row=document.createElement("tr");
+row.innerHTML=`<td>${name}</td><td>${email}</td><td>${message}</td>`;
+backendTable.appendChild(row);
 }
 
-// Clear all data
-clearBtn.addEventListener("click", () => {
-    localStorage.removeItem("contactData");
-    backendTable.innerHTML = `
-        <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Message</th>
-        </tr>
-    `;
+clearBtn.addEventListener("click",()=>{
+localStorage.removeItem("contactData");
+backendTable.innerHTML=`<tr><th>Name</th><th>Email</th><th>Message</th></tr>`;
 });
 </script>
 
